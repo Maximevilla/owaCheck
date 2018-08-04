@@ -33,7 +33,7 @@ for user in users:
         good[user] = credentials[user]
 
 
-    except:
+    except imapclient.exceptions.LoginError:
         pass
 
 print("")
