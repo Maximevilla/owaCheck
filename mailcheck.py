@@ -8,7 +8,7 @@ import pyzmail,  pprint,os
 @click.option('--server', prompt=True, help='IMAP server address')
 @click.option('--out', default='out.txt', help='[OPTIONAL] default:out.txt Output fileName')
 @click.option('--searchpasswords', default='False', help='[OPTIONAL] If True checks for password in this mailbox and retrieves mails')
-@click.option('--search', default='', help='[OPTIONAL] Search in this mailbox and retrieves mails with this word')
+@click.option('--search', default='False', help='[OPTIONAL] Search in this mailbox and retrieves mails with this word')
 
 
 @click.command()
@@ -32,7 +32,7 @@ def mailcheck(file, server, out,searchpasswords,search):
             click.echo("GOOD !!!" + user + " : " + credentials[user])
             good[user] = credentials[user]
 
-            if search != 'True':
+            if search != 'False':
                 UIDs = imapObj.search([u'TEXT', search])
                 folder = search
                 if UIDs:
