@@ -3,9 +3,9 @@ import imapclient
 import pyzmail
 
 
-@click.command()
-@click.argument('file')
-@click.argument('server')
+
+@click.option('--file' , prompt=True, help='Input fileName. Format : "mail:password"')
+@click.option('--server', prompt=True, help='IMAP server address')
 @click.option('--out', default='out.txt', help='Output fileName')
 
 
