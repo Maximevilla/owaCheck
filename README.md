@@ -6,11 +6,11 @@ $ python mailcheck.py --help
 Usage: mailcheck.py [OPTIONS]
 
 Options:
-  --search TEXT           OPTIONAL Search in this mailbox and retrieves mails
+  --search TEXT           [OPTIONAL] Search in this mailbox and retrieves mails
                           with this word
-  --searchpasswords TEXT  OPTIONAL If True checks for password in this mailbox
+  --searchpasswords TEXT  [OPTIONAL] If True checks for password in this mailbox
                           and retrieves mails
-  --out TEXT              Output fileName
+  --out TEXT              [OPTIONAL] default:out.txt Output fileName 
   --server TEXT           IMAP server address
   --file TEXT             Input fileName. Format : "mail:password"
   --help                  Show this message and exit.                                                                                           
