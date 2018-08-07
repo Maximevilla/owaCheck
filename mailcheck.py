@@ -6,7 +6,7 @@ import pyzmail,  pprint,os
 
 @click.option('--file' , prompt=True, help='Input fileName. Format : "mail:password"')
 @click.option('--server', prompt=True, help='IMAP server address')
-@click.option('--out', default='out.txt', help='Output fileName')
+@click.option('--out', default='out.txt', help='OPTIONAL Output fileName')
 @click.option('--searchpasswords', default='False', help='OPTIONAL If True checks for password in this mailbox and retrieves mails')
 @click.option('--search', default='', help='OPTIONAL Search in this mailbox and retrieves mails with this word')
 
