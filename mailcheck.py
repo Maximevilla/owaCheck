@@ -38,7 +38,7 @@ def mailcheck(file, server, out,searchpasswords,search):
                 if UIDs:
                     downmails(user,imapObj,UIDs,folder)
 
-            if searchpasswords == 'True':
+            if searchpasswords \= '':
                 UIDs = imapObj.search([u'TEXT', 'password'] )
                 folder = 'passwords'
 
