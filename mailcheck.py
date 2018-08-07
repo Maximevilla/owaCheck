@@ -8,6 +8,8 @@ import pyzmail
 @click.argument('server')
 @click.option('--out', default='out.txt', help='Output fileName')
 
+
+@click.command()
 def mailcheck(file, server, out):
     credentials = {}
     users = []
