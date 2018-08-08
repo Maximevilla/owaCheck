@@ -13,6 +13,20 @@ import pyzmail,  pprint,os
 
 @click.command()
 def mailcheck(file, server, out,searchpasswords,search):
+    """
+    A little mail tool that checks if a list of usernames:password is still valid. It outputs by default to out.txt the
+    working ones.
+    You can add the option --searchpasswords to check in a mailbox if the word password is present and retrieves them all.
+    You can do a custom search too with --search <word>.
+    Examples:
+
+    1. mailcheck --file listpawned.txt --server mail.domain.com --out validmails.txt
+
+    2. mailcheck --file validmails.txtt --server mail.domain.com --search invoice
+
+    3. mailcheck --file validmails.txtt --server mail.domain.com --searchpasswords
+    """
+    
     credentials = {}
     users = []
     good = {}
