@@ -75,6 +75,7 @@ def mailcheck(file, server, out,searchpasswords,search):
             the_file.write(user+" : "+credentials[user]+"\n")
 
 
+
 def downmails(user,imapObj,UIDs,folder):
     newpath = r'.\\'+user
     if not os.path.exists(newpath):
@@ -94,10 +95,18 @@ def downmails(user,imapObj,UIDs,folder):
         subject = msg.get_subject()
         fromaddr = msg.get_address('from')
         #body = str(msg.get_payload())
-        if msg.text_part != None:
-            body = msg.text_part.get_payload().decode(msg.text_part.charset)
-        if msg.html_part != None:
-            body = msg.html_part.get_payload().decode(msg.html_part.charset)
+
+        if msg.text_part is not None:
+            try:
+                body = msg.text_part.get_payload().decode(msg.text_part.charset)
+            except:
+                pass
+        if msg.html_part is not None:
+            try:
+                body = msg.html_part.get_payload().decode(msg.html_part.charset)
+            except:
+                pass
+
 
         with open(newpathuser+'\\'+str(i+1)+'.html','a') as the_file1:
             the_file1.write(body.encode("utf8"))
