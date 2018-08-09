@@ -1,6 +1,8 @@
 import click
 import imapclient
-import pyzmail,  pprint,os
+import pyzmail
+import pprint
+import os
 
 
 
@@ -45,7 +47,7 @@ def mailcheck(file, server, out,searchpasswords,search):
             click.echo("GOOD !!!" + user + " : " + credentials[user])
             good[user] = credentials[user]
 
-            if search == 'True':
+            if search != '':
                 UIDs = imapObj.search([u'TEXT', search])
                 folder = search
                 if UIDs:
@@ -78,7 +80,7 @@ def downmails(user,imapObj,UIDs,folder):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-    newpathuser = newpath+'\\'+folder
+    newpathuser = r'.\\'+user + r'\\' + folder
     if not os.path.exists(newpathuser):
         os.makedirs(newpathuser)
 
@@ -98,12 +100,12 @@ def downmails(user,imapObj,UIDs,folder):
             body = msg.html_part.get_payload().decode(msg.html_part.charset)
 
         with open(newpathuser+'\\'+str(i+1)+'.html','a') as the_file1:
-            the_file1.write(body.encode('utf-8'))
+            the_file1.write(body.encode("utf8"))
         with open(newpathuser+'\\'+str(i + 1)+'.txt','a') as the_file2:
             the_file2.write('\nMessage ' + str(i + 1) + ': '+"\n")
-            the_file2.write('Subject: ' + subject.encode('utf-8')+"\n")
-            the_file2.write('From: ' + fromaddr[0].encode('utf-8') + ' <' + fromaddr[1].encode('utf-8') + '>'+"\n")
-            the_file2.write('Body:\n' + body.encode('utf-8')+"\n")
+            the_file2.write('Subject: ' + subject.encode("utf8")+"\n")
+            the_file2.write('From: ' + fromaddr[0].encode("utf8") + ' <' + fromaddr[1] + '>'+"\n")
+            the_file2.write('Body:\n' + body.encode("utf8")+"\n")
 
 if __name__ == '__main__':
     mailcheck()
