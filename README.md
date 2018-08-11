@@ -23,6 +23,7 @@ Options:
 The default output is a file named out.txt
 
 Do a second round checking for each valid email account for the word password in it with --passwordsearch True
+
 Generate an html report with thumbnails for easy search with --html True
 
 **Install**
