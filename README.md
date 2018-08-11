@@ -1,5 +1,5 @@
 # owaCheck
-SimpleScript to check from a file with username:password. The name just comes my first usage
+SimpleScript to check from a file with username:password if they are valid on a mailServer. The name just comes from my first usage
 
 ~~~~
 $ python mailcheck.py --help                                                
@@ -22,7 +22,8 @@ Options:
 
 The default output is a file named out.txt
 
-Do a second round checking for each valid email account for the word password in it with --html True
+Do a second round checking for each valid email account for the word password in it with --passwordsearch True
+Generate an html report with thumbnails for easy search with --html True
 
 **Install**
 
@@ -36,4 +37,6 @@ cd owaCheck
 python setup.py install
 ~~~~
 
-TODO : password spray
+TODO : 
+* password spray
+* List of known Imap server for domains in order to make Mixed domains search easyier
